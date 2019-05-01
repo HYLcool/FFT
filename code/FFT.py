@@ -17,9 +17,9 @@ def padding(f):
 	rW = geExp2(cW)
 	rH = geExp2(cH)
 	if rW != cW:
-		f = np.concatenate((f, np.zeros((rW, cH, c)) if c > 1 else np.zeros((rW, rH))))
+		f = np.concatenate((f, np.zeros((rW - cW, cH, c)) if c > 1 else np.zeros((rW - cW, cH))))
 	if rH != cH:
-		f = np.concatenate((f, np.zeros((rW, rH, c)) if c > 1 else np.zeros((rW, rH))), axis = 1)
+		f = np.concatenate((f, np.zeros((rW, rH - cH, c)) if c > 1 else np.zeros((rW, rH - cH))), axis = 1)
 	return f
 
 # 1-D FFT
@@ -134,10 +134,12 @@ def iFFT(F):
 		rc = np.zeros(fc.shape, dtype = complex)
 
 		# 1-D FFT twice
+		# conjugate
+		fc = fc.conj()
 		for u in range(M):
-			rc[u, :] = fft1d(fc[u, :].conj())
+			rc[u, :] = fft1d(fc[u, :])
 		for v in range(N):
-			rc[:, v] = fft1d(rc[:, v].conj())
+			rc[:, v] = fft1d(rc[:, v])
 
 		if c == 1:
 			res = rc
@@ -160,8 +162,8 @@ def main():
 	F1 = np.fft.fft2(f)
 	FS1 = np.fft.fftshift(F1)
 	iF1 = np.fft.ifft2(FS1)
-	F1 = np.log(np.abs(F1) + np.ones(F.shape))
-	FS1 = np.log(np.abs(FS1) + np.ones(FS.shape))
+	F1 = np.log(np.abs(F1) + np.ones(F1.shape))
+	FS1 = np.log(np.abs(FS1) + np.ones(FS1.shape))
 	iF1 = np.abs(iF1)
 	showImgN([f, F, FS, iF, F1, FS1, iF1], ('original', 'FFT', 'FFT Shift', 'inverse FFT', 'FFT np', 'FFT Shift np', 'inverse FFT np'))
 
