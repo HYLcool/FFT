@@ -147,7 +147,7 @@ def iFFT(F):
 	return res
 
 def main():
-	f = plt.imread('../img/fft.tif')
+	f = plt.imread('../img/1.tif')
 	print(f.shape)
 	# my implementation
 	F = FFT(f)
