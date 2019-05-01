@@ -149,7 +149,7 @@ def iFFT(F):
 	return res
 
 def main():
-	f = plt.imread('../img/1.tif')
+	f = plt.imread('../img/fft.tif')
 	print(f.shape)
 	# my implementation
 	F = FFT(f)
@@ -165,6 +165,12 @@ def main():
 	F1 = np.log(np.abs(F1) + np.ones(F1.shape))
 	FS1 = np.log(np.abs(FS1) + np.ones(FS1.shape))
 	iF1 = np.abs(iF1)
+	plt.imsave('../res/fftF.tif', F)
+	plt.imsave('../res/fftFS.tif', FS)
+	plt.imsave('../res/fftiF.tif', iF)
+	plt.imsave('../res/fftFnp.tif', F1)
+	plt.imsave('../res/fftFSnp.tif', FS1)
+	plt.imsave('../res/fftiFnp.tif', iF1)
 	showImgN([f, F, FS, iF, F1, FS1, iF1], ('original', 'FFT', 'FFT Shift', 'inverse FFT', 'FFT np', 'FFT Shift np', 'inverse FFT np'))
 
 if __name__ == '__main__':
