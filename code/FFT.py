@@ -148,8 +148,8 @@ def iFFT(F):
 	res = res.conj() / (M * N)
 	return res
 
-def main():
-	f = plt.imread('../img/fft.tif')
+def Show(path, withNP = False):
+	f = plt.imread(path)
 	print(f.shape)
 	# my implementation
 	F = FFT(f)
@@ -159,19 +159,30 @@ def main():
 	FS = np.log(np.abs(FS) + np.ones(FS.shape))
 	iF = np.abs(iF)
 	# numpy implementation
-	F1 = np.fft.fft2(f)
-	FS1 = np.fft.fftshift(F1)
-	iF1 = np.fft.ifft2(FS1)
-	F1 = np.log(np.abs(F1) + np.ones(F1.shape))
-	FS1 = np.log(np.abs(FS1) + np.ones(FS1.shape))
-	iF1 = np.abs(iF1)
-	plt.imsave('../res/fftF.tif', F)
-	plt.imsave('../res/fftFS.tif', FS)
-	plt.imsave('../res/fftiF.tif', iF)
-	plt.imsave('../res/fftFnp.tif', F1)
-	plt.imsave('../res/fftFSnp.tif', FS1)
-	plt.imsave('../res/fftiFnp.tif', iF1)
-	showImgN([f, F, FS, iF, F1, FS1, iF1], ('original', 'FFT', 'FFT Shift', 'inverse FFT', 'FFT np', 'FFT Shift np', 'inverse FFT np'))
+	if withNP:
+		F1 = np.fft.fft2(f)
+		FS1 = np.fft.fftshift(F1)
+		iF1 = np.fft.ifft2(FS1)
+		F1 = np.log(np.abs(F1) + np.ones(F1.shape))
+		FS1 = np.log(np.abs(FS1) + np.ones(FS1.shape))
+		iF1 = np.abs(iF1)
+	# plt.imsave('../res/fftF.tif', F)
+	# plt.imsave('../res/fftFS.tif', FS)
+	# plt.imsave('../res/fftiF.tif', iF)
+	# plt.imsave('../res/fftFnp.tif', F1)
+	# plt.imsave('../res/fftFSnp.tif', FS1)
+	# plt.imsave('../res/fftiFnp.tif', iF1)
+	inputImage = [f, F, FS, iF]
+	titles = ['original', 'FFT', 'FFT Shift', 'inverse FFT']
+	if withNP:
+		inputImage.append(F1)
+		inputImage.append(FS1)
+		inputImage.append(iF1)
+		titles.extend(['FFT np', 'FFT Shift np', 'inverse FFT np'])
+	showImgN(inputImage, titles)
+
+def main():
+	Show('../img/1.tif', True)
 
 if __name__ == '__main__':
 	main()
